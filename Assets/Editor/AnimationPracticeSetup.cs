@@ -127,7 +127,7 @@ public static class AnimationPracticeSetup
 
         Avatar avatar = AssetDatabase.LoadAllAssetsAtPath(characterPath)
             .OfType<Avatar>()
-            .FirstOrDefault(item => item != null && item.isHuman);
+            .FirstOrDefault(item => item != null && item.isHuman && item.isValid);
 
         if (avatar == null)
         {
@@ -177,6 +177,8 @@ public static class AnimationPracticeSetup
             return;
         }
 
+        Debug.Log($"Mixamo clip imported: {danceClip.name}; length={danceClip.length:F2}s; frame rate={danceClip.frameRate:F1}; Avatar={avatar.name}.");
+
         AnimatorController controller = BuildMixamoController(danceClip);
         GameObject characterAsset = AssetDatabase.LoadAssetAtPath<GameObject>(characterPath);
         if (characterAsset == null)
@@ -201,6 +203,9 @@ public static class AnimationPracticeSetup
         animator.avatar = avatar;
         animator.runtimeAnimatorController = controller;
         animator.applyRootMotion = false;
+        animator.enabled = true;
+        animator.speed = 1f;
+        animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
 
         if (animator.GetComponent<MixamoDanceDemoController>() == null)
             animator.gameObject.AddComponent<MixamoDanceDemoController>();
@@ -304,7 +309,9 @@ public static class AnimationPracticeSetup
         AnimatorState idle = stateMachine.AddState("Idle");
         AnimatorState dance = stateMachine.AddState("Swing Dancing");
         dance.motion = danceClip;
-        stateMachine.defaultState = idle;
+        // Start in the dance state so the clip plays immediately on entering Play mode.
+        // The bool-controlled transitions still allow Space to switch to Idle and back.
+        stateMachine.defaultState = dance;
 
         AnimatorStateTransition idleToDance = idle.AddTransition(dance);
         idleToDance.hasExitTime = false;
