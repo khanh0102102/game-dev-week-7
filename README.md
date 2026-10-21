@@ -1,25 +1,17 @@
-# Game Dev Week 7 — Animation Practice
+# Game Dev Week 7 — Basic Animation Setup
 
-This repository upgrades the Week 1 airplane scene from [BaiTapTuan1_MayBay](https://github.com/khanh0102102/BaiTapTuan1_MayBay) and targets **Unity 6.6 (6000.6.6f1)**.
+This project upgrades the Unity 6.6 airplane scene from https://github.com/khanh0102102/BaiTapTuan1_MayBay. The original Assets/Scenes/SampleScene.unity is preserved with AirPlane, AirplaneBody, AirplaneWing, TailPlane, and AirplaneFin.
 
-## Practice 1 — Mixamo X Bot / Swing Dancing
+## Unity version
 
-Unity cannot include the X Bot and Swing Dancing FBX files on your behalf because the assets need to be downloaded from your Adobe Mixamo account. After downloading the files:
+Use Unity 6.6 (6000.6.6f1), matching ProjectSettings/ProjectVersion.txt.
 
-1. In Mixamo, select **X Bot** and download the character as **FBX** with skin.
-2. Select **Swing Dancing** and download the animation as **FBX** without skin.
-3. Put the files in `Assets/Mixamo/`:
-   - `X Bot.fbx`
-   - `Swing Dancing.fbx`
-4. Let Unity import them, then choose **Tools > Week 7 > Setup Mixamo X Bot Dance**.
-5. The setup tool configures the character as Humanoid, maps the animation to the X Bot Avatar, creates `Assets/Animation/XBotAnimatorController.controller`, adds Idle ↔ Swing Dancing transitions using the `IsDancing` boolean, and places an animated X Bot in the airplane scene.
-6. Press Play. Swing Dancing starts automatically. Press **Space** to toggle between dancing and idle.
+## Practice 2 — Airplane wing animation
 
-The FBX files are not included in this repository; they must be downloaded from Mixamo.
-
-## Practice 2 — Airplane wing takeoff animation
-
-The Editor setup tool creates `Assets/Animation/ThrottleUpAnimation.anim` and an Animator Controller for `AirplaneWing`. The clip is 1 second at 60 FPS and animates the local X rotation through these exact keys:
+1. Open Assets/Scenes/SampleScene.unity.
+2. Choose Tools > Week 7 > Setup Airplane Wing Animation.
+3. Select AirplaneWing and confirm an Animator uses Assets/Animation/AirplaneWingAnimatorController.controller.
+4. Press Play. The one-second ThrottleUpAnimation changes the wing's local X rotation:
 
 | Frame | Time | Rotation X |
 |---:|---:|---:|
@@ -29,21 +21,22 @@ The Editor setup tool creates `Assets/Animation/ThrottleUpAnimation.anim` and an
 | 45 | 0.75 s | -11.25° |
 | 60 | 1.00 s | -15° |
 
-The animation does not loop; the wing holds its final takeoff rotation.
+The clip is 60 FPS and does not loop, so the wing holds its final -15° rotation. Re-run the menu to regenerate the clip and controller.
 
-## Open and test
+## Practice 1 — Mixamo X Bot / Swing Dancing
 
-1. Open this repository in Unity Hub using Editor **6000.6.6f1**.
-2. Wait for the project to import and scripts to compile.
-3. Open `Assets/Scenes/SampleScene.unity`.
-4. The first Editor import creates the wing clip, controller, and Animator binding.
-5. Press Play and inspect `AirplaneWing`. Its X rotation should animate from 0° to -15° over 1 second.
-6. Add the Mixamo FBX files and use the setup menu for Practice 1 as described above.
+The Editor tool automates Unity's rig setup and Animator Controller, but the Mixamo FBX files must be downloaded by you:
 
-You can rerun **Tools > Week 7 > Setup Airplane Wing Animation** to regenerate the wing animation assets and Animator Controller.
+1. Sign in to https://www.mixamo.com/.
+2. Select X Bot and download the character as FBX with skin.
+3. Select Swing Dancing and download the animation as FBX without skin.
+4. Put both FBX files in Assets/Mixamo/; their names should contain X Bot and Swing Dancing.
+5. Wait for Unity to import them and choose Tools > Week 7 > Setup Mixamo X Bot Dance.
+6. The tool configures the character as Humanoid, maps the animation to the X Bot Avatar, creates XBotAnimatorController.controller, and adds Idle ↔ Swing Dancing transitions using the IsDancing boolean.
+7. The tool creates Assets/Scenes/MixamoDanceScene.unity. Open it and press Play; the dance starts automatically. Press Space to toggle Idle/dancing.
 
-## Source scene
+The model and animation FBX files are not included because they must be downloaded from Mixamo. See Assets/Mixamo/README.md.
 
-The original Week 1 airplane scene is retained, including `AirPlane`, `AirplaneBody`, `AirplaneWing`, `TailPlane`, and `AirplaneFin`.
+## Git
 
-Generated Unity folders such as `Library/`, `Temp/`, and `Logs/` should not be committed.
+After running the setup menus, commit generated animation clips, Animator Controllers, changed scene files, and their .meta files. Do not commit Library/, Temp/, or Logs/.
